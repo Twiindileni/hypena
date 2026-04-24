@@ -3,6 +3,7 @@ import Nav       from './components/Nav';
 import Home      from './pages/Home';
 import Converter from './pages/Converter';
 import CropTool  from './pages/CropTool';
+import InvoiceGenerator from './pages/InvoiceGenerator';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
             <Route path="/"          element={<Home />}      />
             <Route path="/converter" element={<Converter />} />
             <Route path="/crop"      element={<CropTool />}  />
+            <Route path="/invoice"   element={<InvoiceGenerator />}  />
           </Routes>
         </div>
         <footer className="app-footer">

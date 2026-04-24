@@ -14,6 +14,7 @@ export default function Nav() {
           <NavLink to="/"         end className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}>Home</NavLink>
           <NavLink to="/converter"    className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}>Image Converter</NavLink>
           <NavLink to="/crop"         className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}>Crop Tool</NavLink>
+          <NavLink to="/invoice"      className={({ isActive }) => `${styles.tab} ${isActive ? styles.active : ''}`}>Invoice Generator</NavLink>
         </div>
       </nav>
     </header>
