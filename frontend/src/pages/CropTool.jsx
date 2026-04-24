@@ -238,31 +238,67 @@ export default function CropTool() {
     setDownloading(true);
     try {
       const crop = cropRef.current;
-      const form = new FormData();
-      form.append('file', file);
-      form.append('x',  Math.round(crop.x));
-      form.append('y',  Math.round(crop.y));
-      form.append('cw', Math.round(crop.w));
-      form.append('ch', Math.round(crop.h));
-      form.append('w',  activePreset.w);
-      form.append('h',  activePreset.h);
-
-      const res  = await fetch(`${API_URL}/api/crop`, { method: 'POST', body: form });
-      if (!res.ok) throw new Error(await res.text());
-
-      const blob = await res.blob();
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
+      const blob = await cropWithFallback(file, imgEl, crop, activePreset.w, activePreset.h);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
       a.download = `${activePreset.category}-${activePreset.name}-${activePreset.w}x${activePreset.h}.jpg`
                      .replace(/\s+/g, '-').toLowerCase();
+      document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(url);
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     } catch (err) {
       alert(`Error: ${err.message}`);
     } finally {
       setDownloading(false);
     }
+  }
+
+  async function cropWithFallback(sourceFile, sourceImg, crop, w, h) {
+    try {
+      const form = new FormData();
+      form.append('file', sourceFile);
+      form.append('x', Math.round(crop.x));
+      form.append('y', Math.round(crop.y));
+      form.append('cw', Math.round(crop.w));
+      form.append('ch', Math.round(crop.h));
+      form.append('w', w);
+      form.append('h', h);
+
+      const res = await fetch(`${API_URL}/api/crop`, { method: 'POST', body: form });
+      if (!res.ok) throw new Error('Backend crop failed');
+      return await res.blob();
+    } catch {
+      return await cropInBrowser(sourceImg, crop, w, h);
+    }
+  }
+
+  function cropInBrowser(sourceImg, crop, w, h) {
+    return new Promise((resolve, reject) => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('Canvas not supported');
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(sourceImg, crop.x, crop.y, crop.w, crop.h, 0, 0, w, h);
+
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return reject(new Error('Failed to generate cropped image'));
+            resolve(blob);
+          },
+          'image/jpeg',
+          0.92
+        );
+      } catch (err) {
+        reject(err instanceof Error ? err : new Error('Client crop failed'));
+      }
+    });
   }
 
   // ── resize canvas on window resize ──────────────────────────────────────
