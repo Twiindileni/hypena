@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Nav       from './components/Nav';
+import Loader    from './components/Loader';
 import Home      from './pages/Home';
 import Converter from './pages/Converter';
 import CropTool  from './pages/CropTool';
@@ -8,6 +9,7 @@ import InvoiceGenerator from './pages/InvoiceGenerator';
 export default function App() {
   return (
     <BrowserRouter>
+      <Loader />
       <div className="bg-glow" />
       <div className="app-shell">
         <Nav />

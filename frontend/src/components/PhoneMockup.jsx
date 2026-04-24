@@ -1,3 +1,4 @@
+import cateringImg from '../assets/catering.png';
 import styles from './PhoneMockup.module.css';
 
 export default function PhoneMockup() {
@@ -12,7 +13,7 @@ export default function PhoneMockup() {
             <span className={styles.bell}>🔔</span>
           </div>
           <div className={styles.heroImg}>
-            <span>🍖</span>
+            <img src={cateringImg} alt="Catering Service" className={styles.mainImg} />
           </div>
           <div className={styles.content}>
             <div className={styles.tags}>
