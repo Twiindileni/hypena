@@ -222,9 +222,54 @@ textarea { resize: vertical; }
 }
 
 @media (max-width: 800px) {
+  .main { padding: 1.25rem 4% 2rem; }
+  .panel, .preview { padding: 0.85rem; }
+  .header h2 { font-size: 1.65rem; }
+
   .grid { grid-template-columns: 1fr; }
-  .itemRow {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .actionRight {
+    width: 100%;
+    display: grid;
     grid-template-columns: 1fr 1fr;
   }
-  .amount { text-align: left; }
+  .actionRight button,
+  .secondaryBtn {
+    width: 100%;
+  }
+  .itemRow {
+    grid-template-columns: 1fr;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 0.55rem;
+  }
+  .amount { text-align: left; font-size: 0.78rem; }
+  .removeBtn { justify-self: start; }
+
+  .invoiceTop {
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  .invoiceNo {
+    font-size: 0.75rem !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .actionRight {
+    grid-template-columns: 1fr;
+  }
+  .invoiceCard {
+    padding: 0.8rem;
+  }
+  .meta {
+    grid-template-columns: 1fr;
+  }
+  .table {
+    font-size: 0.72rem;
+  }
 }

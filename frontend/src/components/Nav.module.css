@@ -6,12 +6,19 @@
 
 .nav {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
   padding: 1rem 5%;
   background: rgba(7, 7, 8, 0.6);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-border);
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .brand {
@@ -38,6 +45,33 @@
 
 .brandName span { color: var(--accent); }
 
+.burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.25s ease;
+}
+
+.burger span {
+  width: 18px;
+  height: 2px;
+  background: #fff;
+  border-radius: 10px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.burgerOpen span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burgerOpen span:nth-child(2) { opacity: 0; }
+.burgerOpen span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
 .tabs {
   display: flex;
   gap: 0.25rem;
@@ -45,6 +79,9 @@
   padding: 0.25rem;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .tab {
@@ -74,8 +111,46 @@
   box-shadow: 0 4px 14px var(--accent-glow);
 }
 
+@media (min-width: 801px) {
+  .tabs {
+    max-height: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .nav { padding: 0.75rem 4%; gap: 0.55rem; }
+  .burger { display: inline-flex; }
+
+  .tabs {
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .tabsOpen {
+    max-height: 320px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .tab {
+    width: 100%;
+    justify-content: center;
+    padding: 0.6rem 0.7rem;
+  }
+}
+
 @media (max-width: 600px) {
   .nav { padding: 0.75rem 4%; }
-  .tab { padding: 0.45rem 0.75rem; font-size: 0.8rem; }
-  .brandName { font-size: 1.35rem; }
+  .brandLogo { width: 28px; height: 28px; }
+  .brandName { font-size: 1.3rem; }
+  .tab { font-size: 0.78rem; }
 }
